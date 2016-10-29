@@ -19,7 +19,7 @@ function performClick() {
     if (value == "") { 
         return;
     }
-    $.post("http://localhost:8080/", value).done(function(data) {
+    $.post("http://localhost:8080/individual", value).done(function(data) {
         var outDiv = $("#out_div");
         outDiv.removeClass("invisible");
         outDiv.toggleClass("visible");

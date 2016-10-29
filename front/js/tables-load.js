@@ -21,6 +21,17 @@ $(document).ready(function() {
                 }
             })
         });
+        $("#edit-detail").click(function() { 
+            $.get("http://localhost:8080/db/get-detail/" + $("#modal-head").text().substring(7), function (data) {
+                var detail = data.detail;
+                window.location.replace("http://localhost:8080/addOrUpdateDetail.html?cost="+detail.cost+
+                "&warehouseId="+detail.warehouses_id+
+                "&factoryId="+detail.factories_id+
+                "&creationDate="+detail.creation_date+
+                "&designersGroupId="+detail.designers_groups_id+
+                "&detailId="+detail.id);
+            });
+        });
         $("#myModal").on('hidden.bs.modal', function () {
             $("#designers-table tbody tr").remove();
             $("#warehouse-output").val("");

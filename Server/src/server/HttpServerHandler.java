@@ -6,7 +6,9 @@ import core.ILog;
 import core.Individual_3;
 import core.Result;
 import models.*;
+import models.Factory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.ordering.antlr.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -37,25 +39,39 @@ public class HttpServerHandler implements IHttpServerHandler {
             case GET:
                 return handleGet(request);
             case POST:
-                return handlePost(request);
+                try {
+                    return handlePost(request);
+                } catch (IOException e) {
+                    log.error(String.format("Handling POST request ends with error: %s", e.getMessage()));
+                    return Response.empty();
+                }
             default: throw new RuntimeException("Not supported http method: " + httpMethod
                     + " in HttpServerHandler");
         }
     }
 
-    private Response handlePost(Request request) {
+    private Response handlePost(Request request) throws IOException {
         String queryString = request.getQueryString();
-        if (queryString.length() > 0) {
-            Result individual = new Individual_3(request.getBody());
-            try {
+        if (queryString.length() == 0) {
+            return Response.empty();
+        }
+        String[] segments = queryString.split("/");
+        if (segments.length < 2) {
+            return Response.empty();
+        }
+        if (segments[1].equals("db")) {
+            return performDbOperation(segments[2], request.getBody());
+        }
+        switch (segments[1]) {
+            case "db":
+                return performDbOperation(segments[2], request.getBody());
+            case "individual":
+                Result individual = new Individual_3(request.getBody());
                 String result = individual.getResult();
                 return new Response(result.getBytes("utf-8"), MimeType.html);
-            } catch (UnsupportedEncodingException e) {
-                log.error(String.format("Handling POST request ends with error: %s", e.getMessage()));
+            default:
                 return Response.empty();
-            }
         }
-        return Response.empty();
     }
 
     private Response handleGet(Request request) {
@@ -90,7 +106,40 @@ public class HttpServerHandler implements IHttpServerHandler {
         }
     }
 
-    private Response performDbOperation(String query) throws JsonProcessingException, UnsupportedEncodingException {
+    private Response performDbOperation(String method, String postBody)
+            throws IOException {
+        switch (method) {
+            case "addOrUpdate":
+                ObjectMapper objectMapper = new ObjectMapper();
+                Detail detail = objectMapper.readValue(postBody, Detail.class);
+                try {
+                    checkDetail(detail);
+                }catch (AddOrUpdateError e) {
+                    return Response.error(e.getMessage());
+                }
+                boolean b = DbContext.addOrUpdateEntity(Detail.class, detail.getId(), detail);
+                return new Response((b + "").getBytes("UTF-8"), MimeType.html);
+            default: return Response.empty();
+        }
+    }
+
+    private void checkDetail(Detail detail) throws AddOrUpdateError {
+        Warehouse warehouse = DbContext.getEntityById(Warehouse.class, detail.getWarehouses_id());
+        if (warehouse == null) {
+            throw new AddOrUpdateError("warehouses_id");
+        }
+        Factory factory = DbContext.getEntityById(Factory.class, detail.getFactories_id());
+        if (factory == null) {
+            throw new AddOrUpdateError("factory_id");
+        }
+        DesignersGroup designersGroup = DbContext.getEntityById(DesignersGroup.class, detail.getDesigners_groups_id());
+        if (designersGroup == null) {
+            throw new AddOrUpdateError("group_id");
+        }
+    }
+
+    private Response performDbOperation(String query)
+            throws JsonProcessingException, UnsupportedEncodingException {
         String[] segments = query.split("/");
         if (!segments[1].equals("db")) {
             return Response.empty();
@@ -151,6 +200,9 @@ public class HttpServerHandler implements IHttpServerHandler {
             case "individual":
                 title = "Individual task";
                 individualActiveClass = "active";
+            case "addOrUpdateDetail":
+                title = "Detail editor";
+                tablesActiveClass = "active";
                 break;
         }
         model.setTitle(title);

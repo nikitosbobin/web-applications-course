@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TransferQueue;
 
 
 public class DbContext {
@@ -64,6 +65,25 @@ public class DbContext {
         }
         session.close();
         return true;
+    }
+
+    public static <T> boolean addOrUpdateEntity(Class<T> entityClass, int id, T entity) {
+        Session session = openSession();
+        try {
+            T entityById = getEntityById(entityClass, id);
+            Transaction transaction = session.beginTransaction();
+            if (entityById == null) {
+                session.save(entity);
+            }else {
+                session.update(entity);
+            }
+            transaction.commit();
+            session.close();
+            return true;
+        } catch (Exception e) {
+            session.close();
+            return false;
+        }
     }
 
     public static String getRandomCity() {

@@ -1,5 +1,7 @@
 package server;
 
+import java.nio.charset.Charset;
+
 public class Response {
     private byte[] result;
     private MimeType mimeType;
@@ -8,6 +10,8 @@ public class Response {
         this.result = result;
         this.mimeType = mimeType;
     }
+
+    private Response(){}
 
     public byte[] getResponseBody() {
         return result;
@@ -23,5 +27,9 @@ public class Response {
 
     public static Response empty() {
         return new Response(new byte[0], MimeType.html);
+    }
+
+    public static Response error(String errorMessage) {
+        return new Response(errorMessage.getBytes(Charset.forName("utf-8")), MimeType.html);
     }
 }

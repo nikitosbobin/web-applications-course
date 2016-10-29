@@ -1,5 +1,41 @@
 $(document).ready(function () {
     tryToFillDocument();
+    $(".errorable").change(function () {
+        $(this).parent().removeClass("has-warning");
+    });
+    $("#add-detail").click(function () {
+        if (!checkInputsNotEmpty()) {
+            return;
+        }
+        var date = $("#creation_date").val();
+        date = new Date(date).getTime();
+        var warehouse = $("#warehouses_id").val();
+        var factory = $("#factory_id").val();
+        var group = $("#group_id").val();
+        var cost = $("#detail_cost").val();
+        var id = $("#modal-head").text().substring(7);
+        if (!id) {
+            id = 0;
+        }//todo сделать проверки на пустоту
+        //и полезные ошибки
+        var resultDetail = "{"+
+                                "\"creation_date\":\""+date+
+                                "\",\"warehouses_id\":\""+warehouse+
+                                "\",\"factories_id\":\""+factory+
+                                "\",\"cost\":\""+cost+
+                                "\",\"id\":\""+id+
+                                "\",\"designers_groups_id\":\""+group+"\""
+                            +"}";
+        $.post("http://localhost:8080/db/addOrUpdate", resultDetail).done(function (data) {
+            debugger;
+            if (data == "true") {
+                window.location.replace("http://localhost:8080/tables.html");
+            } else if (data.indexOf("invalid") == 0) {
+                debugger;
+                $("#"+data.substring(8)).parent().addClass("has-warning");
+            }
+        });
+    });
 });
 
 function tryToFillDocument() {
@@ -15,14 +51,16 @@ function tryToFillDocument() {
     var factory = map.factoryId;
     var group = map.designersGroupId;
     var cost = map.cost;
-    console.log(getFormattedDate(date));
+    var detailId = map.detailId;
     $("#creation_date").val(getFormattedDate(date));
     $("#warehouses_id").val(warehouse);
     $("#factory_id").val(factory);
     $("#group_id").val(group);
     $("#detail_cost").val(cost);
+    $("#modal-head").text("Detail " + detailId);
 }
 //http://localhost:8080/addDetail.html?cost=100500&warehouseId=33&factoryId=18&creationdate=1401559200000&designersGroupId=3
+//http://localhost:8080/addDetail.html?cost=100500&warehouseId=33&factoryId=18&creationDate=1401559200000&designersGroupId=3&detailId=5
 function parseQuery(query) {
     var result = {};
     var segments = query.split('&');
@@ -31,6 +69,35 @@ function parseQuery(query) {
         result[seg[0]] = seg[1];
     }
     return result;
+}
+
+function checkInputsNotEmpty() {
+    var date = $("#creation_date")
+    var wareHouse = $("#warehouses_id");
+    var factory = $("#factory_id");
+    var group = $("#group_id");
+    var cost = $("#detail_cost");
+    if (!date.val()) {
+        date.parent().addClass("has-warning");
+        return false;
+    }
+    if (!wareHouse.val()) {
+        wareHouse.parent().addClass("has-warning");
+        return false;
+    }
+    if (!group.val()) {
+        group.parent().addClass("has-warning");
+        return false;
+    }
+    if (!factory.val()) {
+        factory.parent().addClass("has-warning");
+        return false;
+    }
+    if (!cost.val()) {
+        cost.parent().addClass("has-warning");
+        return false;
+    }
+    return true;
 }
 
 function getFormattedDate(date) {
