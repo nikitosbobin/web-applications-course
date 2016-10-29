@@ -1,0 +1,31 @@
+<script src="js/add-detail.js"></script>
+<div class="row">
+  <div class="col-md-5 col-md-offset-3">
+    <div class="form-group label-floating">
+        <label class="control-label" for="creation_date">Дата создания детали</label>
+        <input class="form-control" id="creation_date" type="date">
+    </div>
+    <div class="form-inline flex-inputs">
+        <div class="form-group label-floating">
+            <label class="control-label" for="warehouses_id">Идентификатор склада</label>
+            <input min="1" class="form-control" id="warehouses_id" type="number">
+        </div>
+        <div class="form-group label-floating">
+            <label class="control-label" for="factory_id">Идентификатор завода</label>
+            <input min="1" class="form-control" id="factory_id" type="number">
+        </div>
+    </div>
+    <div class="form-inline flex-inputs">
+        <div class="form-group label-floating">
+            <label class="control-label" for="group_id">Идентификатор группы разработчиков</label>
+            <input min="1" class="form-control" id="group_id" type="number">
+        </div>
+        <div class="form-group label-floating">
+            <label class="control-label" for="detail_cost">Стоимость детали</label>
+            <input min="1" class="form-control" id="detail_cost" type="number">
+        </div>
+    </div></br>
+    <a class="btn btn-info btn-raised" id="add-detail" role="button">
+      <i class="material-icons">done</i>Add detail</a>
+  </div>
+</div>

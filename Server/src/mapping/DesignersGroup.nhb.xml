@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="models.DesignersGroup" table="designers_groups">
+        <id column="id" name="id" type="java.lang.Integer">
+            <generator class="increment"/>
+        </id>
+
+        <set name="details" lazy="false">
+            <key column="designers_groups_id"/>
+            <one-to-many class="models.Detail"/>
+        </set>
+        <set name="designers" lazy="false">
+            <key column="designers_groups_id"/>
+            <one-to-many class="models.Designer"/>
+        </set>
+    </class>
+</hibernate-mapping>

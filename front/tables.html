@@ -1,0 +1,71 @@
+<script src="js/tables-load.js"></script>
+<div class="row">
+  <div class="col-md-10 col-md-offset-1 text-center">
+    <table class="table table-striped table-hover" id="details-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Id</th>
+          <th>Creation date</th>
+          <th>Warehouse id</th>
+          <th>Factory id</th>
+          <th>Cost</th>
+          <th>Design group id</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <div class="text-right">
+      <div class="loader"></div>
+      <a class="btn btn-info btn-raised btn-sm" id="add_detail" role="button">
+        <i class="material-icons">add</i></a>
+    </div>
+  </div>
+</div>
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" id="modal-close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="modal-head"></h4>
+      </div>
+      <div class="modal-body">
+        <p class="visible" id="wait">Please wait...</p>
+        <div id="detail_spec" class="invisible">
+          <div class="text-right">
+            <div class="btn-group btn-group-raised">
+              <a class="btn btn-xs btn-info" id="edit-detail"><i class="material-icons">edit</i></a>
+              <a class="btn btn-xs btn-info" id="delete-detail"><i class="material-icons">delete</i></a>
+            </div>
+          </div>
+          <div>
+            <label for="warehouse-output" class="control-label">Warehouse</label>
+            <output id="warehouse-output"></output>
+          </div>
+          <div>
+            <label for="factory-output" class="control-label">Factory</label>
+            <output id="factory-output"></output>
+          </div>
+          <div>
+            <label for="designers-table" class="control-label">Designers</label>
+            <table class="table table-striped table-hover" id="designers-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Id</th>
+                <th>Surname</th>
+                <th>Name</th>
+                <th>Second name</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      

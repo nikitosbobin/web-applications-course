@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="models.Designer" table="designers">
+        <id column="id" name="id" type="java.lang.Integer">
+            <generator class="increment"/>
+        </id>
+        <property column="name" name="name" type="java.lang.String"/>
+        <property column="surname" name="surname" type="java.lang.String"/>
+        <property column="second_name" name="second_name" type="java.lang.String"/>
+        <property column="designers_groups_id" name="designers_groups_id" type="java.lang.Integer"/>
+    </class>
+</hibernate-mapping>

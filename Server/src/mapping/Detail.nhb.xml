@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="models.Detail" table="details">
+        <id column="id" name="id" type="java.lang.Integer">
+            <generator class="increment"/>
+        </id>
+        <property column="creation_date" name="creation_date" type="java.util.Date"/>
+        <property column="warehouses_id" name="warehouses_id" type="java.lang.Integer"/>
+        <property column="factories_id" name="factories_id" type="java.lang.Integer"/>
+        <property column="cost" name="cost" type="java.lang.Integer"/>
+        <property column="designers_groups_id" name="designers_groups_id" type="java.lang.Integer"/>
+    </class>
+</hibernate-mapping>
