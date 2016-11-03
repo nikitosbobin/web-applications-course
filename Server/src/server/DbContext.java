@@ -10,10 +10,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TransferQueue;
 
 
 public class DbContext {
+    private static Session session;
+
     public static <T> T getEntityById(Class<T> entityClass, int id) {
         Session session = openSession();
         return getEntityById(session, entityClass, id);
@@ -47,24 +48,10 @@ public class DbContext {
             Transaction transaction = session.beginTransaction();
             session.delete(entity);
             transaction.commit();
-            session.close();
             return true;
         }catch (Exception e) {
             return false;
         }
-    }
-
-    public static boolean addDetail(Detail detail) {
-        Session session = openSession();
-        try {
-            Transaction transaction = session.beginTransaction();
-            session.save(detail);
-            transaction.commit();
-        } catch (Exception e) {
-            return false;
-        }
-        session.close();
-        return true;
     }
 
     public static <T> boolean addOrUpdateEntity(Class<T> entityClass, int id, T entity) {
@@ -78,10 +65,8 @@ public class DbContext {
                 session.update(entity);
             }
             transaction.commit();
-            session.close();
             return true;
         } catch (Exception e) {
-            session.close();
             return false;
         }
     }
@@ -204,18 +189,24 @@ public class DbContext {
         return designer;
     }
 
+    public static boolean isOpened() {
+        return session != null && session.isOpen();
+    }
+
     public static Session openSession() {
-        Configuration configuration = new Configuration();
-        SessionFactory sessionFactory = configuration.configure().buildSessionFactory();
-        Session session = null;
-        while (true) {
-            try {
-                session = sessionFactory.openSession();
-                break;
-            } catch (HibernateException e) {
-                //ignore
+        if (isOpened()) {
+            return session;
+        } else {
+            while (true) {
+                try {
+                    Configuration configuration = new Configuration();
+                    SessionFactory sessionFactory = configuration.configure().buildSessionFactory();
+                    session = sessionFactory.openSession();
+                    return session;
+                } catch (HibernateException e) {
+                    //ignore
+                }
             }
         }
-        return session;
     }
 }

@@ -16,6 +16,7 @@ public class ServerEntryPoint {
         String frontPath = new File("front").getAbsolutePath();
         ConsoleLog log = new ConsoleLog();
         HtmlComposer composer = new HtmlComposer(frontPath, "layout.html", log.withPrefix("Composer"));
+        DbContext.openSession();
         IHttpServerHandler handler = new HttpServerHandler(Paths.get(frontPath), composer, log.withPrefix("Handler"));
         Server server = new Server(8080, handler, log.withPrefix("Server"));
         server.start();

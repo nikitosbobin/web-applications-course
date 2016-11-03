@@ -200,6 +200,7 @@ public class HttpServerHandler implements IHttpServerHandler {
             case "individual":
                 title = "Individual task";
                 individualActiveClass = "active";
+                break;
             case "addOrUpdateDetail":
                 title = "Detail editor";
                 tablesActiveClass = "active";

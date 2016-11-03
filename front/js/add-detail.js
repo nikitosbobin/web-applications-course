@@ -42,6 +42,7 @@ function tryToFillDocument() {
     var href = window.location.href;
     var startQueryIndex = href.indexOf("?");
     if (startQueryIndex === -1) {
+        $("#creation_date").val(getFormattedDate(new Date()));    
         return;
     }
     var query = href.substring(startQueryIndex + 1);
