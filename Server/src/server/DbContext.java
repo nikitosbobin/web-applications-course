@@ -57,12 +57,14 @@ public class DbContext {
     public static <T> boolean addOrUpdateEntity(Class<T> entityClass, int id, T entity) {
         Session session = openSession();
         try {
+
             T entityById = getEntityById(entityClass, id);
             Transaction transaction = session.beginTransaction();
+
             if (entityById == null) {
                 session.save(entity);
             }else {
-                session.update(entity);
+                session.merge(entity);
             }
             transaction.commit();
             return true;

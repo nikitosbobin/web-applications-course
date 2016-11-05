@@ -8,7 +8,6 @@ import core.Result;
 import models.*;
 import models.Factory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.ordering.antlr.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -16,6 +15,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 
 public class HttpServerHandler implements IHttpServerHandler {
@@ -244,5 +244,15 @@ public class HttpServerHandler implements IHttpServerHandler {
         String fileName = path.getFileName().toString();
         int pointPosition = fileName.lastIndexOf('.');
         return fileName.substring(pointPosition + 1);
+    }
+
+    private HashMap<String, String> parseQuery(String query) {
+        HashMap<String, String> result = new HashMap<>();
+        String[] segments = query.split("&");
+        for (int i = 0; i < segments.length; ++i) {
+            String[] pair = segments[i].split("=");
+            result.put(pair[0], pair[1]);
+        }
+        return result;
     }
 }
