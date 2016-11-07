@@ -84,7 +84,7 @@ function deleteRow(id) {
         if (data == "true") { 
             location.reload();
         }
-    })
+    });
 }
 
 function editRow(id) {

@@ -16,8 +16,7 @@ $(document).ready(function () {
         var id = $("#modal-head").text().substring(7);
         if (!id) {
             id = 0;
-        }//todo сделать проверки на пустоту
-        //и полезные ошибки
+        }
         var resultDetail = "{"+
                                 "\"creation_date\":\""+date+
                                 "\",\"warehouses_id\":\""+warehouse+
@@ -60,8 +59,7 @@ function tryToFillDocument() {
     $("#detail_cost").val(cost);
     $("#modal-head").text("Detail " + detailId);
 }
-//http://localhost:8080/addDetail.html?cost=100500&warehouseId=33&factoryId=18&creationdate=1401559200000&designersGroupId=3
-//http://localhost:8080/addDetail.html?cost=100500&warehouseId=33&factoryId=18&creationDate=1401559200000&designersGroupId=3&detailId=5
+
 function parseQuery(query) {
     var result = {};
     var segments = query.split('&');

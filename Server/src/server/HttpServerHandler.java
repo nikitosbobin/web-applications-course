@@ -59,9 +59,6 @@ public class HttpServerHandler implements IHttpServerHandler {
         if (segments.length < 2) {
             return Response.empty();
         }
-        if (segments[1].equals("db")) {
-            return performDbOperation(segments[2], request.getBody());
-        }
         switch (segments[1]) {
             case "db":
                 return performDbOperation(segments[2], request.getBody());

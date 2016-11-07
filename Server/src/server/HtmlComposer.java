@@ -24,7 +24,6 @@ public class HtmlComposer implements IHtmlComposer {
                     front.getAbsolutePath()));
         }
         configuration = new Configuration();
-        //configuration.setDefaultEncoding("ascii");
         configuration.setDirectoryForTemplateLoading(front);
     }
 
@@ -43,7 +42,6 @@ public class HtmlComposer implements IHtmlComposer {
         OutputStreamWriter streamWriter = new OutputStreamWriter(memoryStream);
         try {
             template.process(data, streamWriter);
-            //template.process(data, new OutputStreamWriter(System.out));
             streamWriter.flush();
         } catch (TemplateException | IOException e) {
             log.error(String.format("Composing html ends with error: %s", e.getMessage()));
