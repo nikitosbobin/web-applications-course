@@ -221,16 +221,6 @@ public class HttpServerHandler implements IHttpServerHandler {
         return result;
     }
 
-    private String toRedLine(String line) {
-        if (line.length() == 0) {
-            return "";
-        }
-        if (line.length() == 1) {
-            return line.toUpperCase();
-        }
-        return String.format("%s%s", (line.charAt(0) + "").toUpperCase(), line.substring(1));
-    }
-
     private String getFileName(Path path) {
         String fileName = path.getFileName().toString();
         int pointPosition = fileName.lastIndexOf('.');
